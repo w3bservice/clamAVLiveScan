@@ -1,0 +1,26 @@
+/*
+ ClamAV Live Scan
+ mad.coder@mail.com
+ https://github.com/madcoder42/clamAVLiveScan
+
+ Copyright 2017 madcoder42
+
+ This file is part of ClamAV Live Scan.
+
+ ClamAV Live Scan is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ ClamAV Live Scan is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with ClamAV Live Scan.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+#include "ressources.rc"
+
+A ICON MOVEABLE PURE LOADONCALL DISCARDABLE "ClamAVLiveScan_16.ico"
