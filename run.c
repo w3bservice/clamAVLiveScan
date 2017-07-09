@@ -25,40 +25,40 @@
 
 short int checkAlreadyRun()
 {
-    HANDLE hProcessSnap = NULL;
-    HANDLE hProc = NULL;
-    PROCESSENTRY32 pe32;
-    char path[MAXPATH];
-    short int ret = RET_E;
-    DWORD pid = GetCurrentProcessId();
+	HANDLE hProcessSnap = NULL;
+	HANDLE hProc = NULL;
+	PROCESSENTRY32 pe32;
+	char path[MAXPATH];
+	short int ret = RET_E;
+	DWORD pid = GetCurrentProcessId();
 
-    if ((hProcessSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0)) == INVALID_HANDLE_VALUE) {
-        return RET_E;
-    }
-    pe32.dwSize = sizeof(PROCESSENTRY32);
-    if (!Process32First(hProcessSnap, &pe32)) {
-        goto stopCheckRun;
-    }
-    do {
-        if (pe32.th32ProcessID != pid && strstr(PARAMS.appPath, (char *)pe32.szExeFile) != NULL) {
-            if ((hProc = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, pe32.th32ProcessID)) != NULL) {
-                memset(path, 0, MAXPATH);
-                if (GetModuleFileNameEx(hProc, NULL, path, MAXPATH) != 0) {
-                    if (strcasecmp(PARAMS.appPath, path) == 0) {
-                        ret = RET_O;
-                        goto stopCheckRun;
-                    }
-                }
-                CloseHandle(hProc);
-            }
-        }
-    } while(Process32Next(hProcessSnap, &pe32));
+	if ((hProcessSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0)) == INVALID_HANDLE_VALUE) {
+		return RET_E;
+	}
+	pe32.dwSize = sizeof(PROCESSENTRY32);
+	if (!Process32First(hProcessSnap, &pe32)) {
+		goto stopCheckRun;
+	}
+	do {
+		if (pe32.th32ProcessID != pid && strstr(PARAMS.appPath, (char *)pe32.szExeFile) != NULL) {
+			if ((hProc = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, pe32.th32ProcessID)) != NULL) {
+				memset(path, 0, MAXPATH);
+				if (GetModuleFileNameEx(hProc, NULL, path, MAXPATH) != 0) {
+					if (strcasecmp(PARAMS.appPath, path) == 0) {
+						ret = RET_O;
+						goto stopCheckRun;
+					}
+				}
+				CloseHandle(hProc);
+			}
+		}
+	} while(Process32Next(hProcessSnap, &pe32));
 stopCheckRun:
-    if (hProc != NULL) {
-        CloseHandle(hProc);
-    }
-    if (hProcessSnap != NULL) {
-        CloseHandle(hProcessSnap);
-    }
-    return ret;
+	if (hProc != NULL) {
+		CloseHandle(hProc);
+	}
+	if (hProcessSnap != NULL) {
+		CloseHandle(hProcessSnap);
+	}
+	return ret;
 }

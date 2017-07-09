@@ -25,94 +25,94 @@
 
 void loadAllExtensions()
 {
-    char ext[16];
-    int len;
-    char *s = (char *)SCANEXTENSIONS;
-    char *tmp = NULL;
-    
-    while((tmp = strchr(s, ';')) != NULL) {
-        len = (tmp - s);
-        if (len < 15) {
-            memset(ext, 0, 16);
-            ext[0] = '.';
-            memcpy(ext + 1, s, len);
-            addAnExtensions(ext);
-        }
-        s = tmp + 1;
-    }
-    if (s != NULL && (len = strlen(s)) < 15) {
-        memset(ext, 0, 16);
-        ext[0] = '.';
-        memcpy(ext + 1, s, len);
-        addAnExtensions(ext);
-    }
-    return;
+	char ext[16];
+	int len;
+	char *s = (char *)SCANEXTENSIONS;
+	char *tmp = NULL;
+
+	while((tmp = strchr(s, ';')) != NULL) {
+		len = (tmp - s);
+		if (len < 15) {
+			memset(ext, 0, 16);
+			ext[0] = '.';
+			memcpy(ext + 1, s, len);
+			addAnExtensions(ext);
+		}
+		s = tmp + 1;
+	}
+	if (s != NULL && (len = strlen(s)) < 15) {
+		memset(ext, 0, 16);
+		ext[0] = '.';
+		memcpy(ext + 1, s, len);
+		addAnExtensions(ext);
+	}
+	return;
 }
 
 /******************************************************************************/
 
 void addAnExtensions(char *ext)
 {
-    struct sEXTENSIONS *n = NULL;
-    
-    if ((n = (struct sEXTENSIONS *)malloc(sizeof(struct sEXTENSIONS))) == NULL) {
+	struct sEXTENSIONS *n = NULL;
+
+	if ((n = (struct sEXTENSIONS *)malloc(sizeof(struct sEXTENSIONS))) == NULL) {
 		return;
 	}
-    if ((n->ext = (char *)calloc((strlen(ext) + 1), sizeof(char))) == NULL) {
+	if ((n->ext = (char *)calloc((strlen(ext) + 1), sizeof(char))) == NULL) {
 		free(n);
 		return;
 	}
-    strcpy(n->ext, ext);
-    n->next = NULL;
-    if (PARAMS.extHead == NULL) {
-        PARAMS.extHead = n;
-    } else {
-        PARAMS.extLast->next = n;
-    }
-    PARAMS.extLast = n;
-    return;
+	strcpy(n->ext, ext);
+	n->next = NULL;
+	if (PARAMS.extHead == NULL) {
+		PARAMS.extHead = n;
+	} else {
+		PARAMS.extLast->next = n;
+	}
+	PARAMS.extLast = n;
+	return;
 }
 
 /******************************************************************************/
 
 short int isValidExtension(char *path)
 {
-    struct sEXTENSIONS *n = NULL;
-    char *ext = NULL;
-    int len;
-    
-    if ((ext = strrchr(path, '.')) == NULL) {
-        return RET_E;
-    }
-    len = strlen(ext);
-    if (len == 0 || len > 15) {
-        return RET_E;
-    }
-    n = PARAMS.extHead;
-    while(n != NULL) {
-        if (strcasecmp(ext, n->ext) == 0) {
-            return RET_O;
-        }
-        n = n->next;
-    }
-    return RET_E;
+	struct sEXTENSIONS *n = NULL;
+	char *ext = NULL;
+	int len;
+
+	if ((ext = strrchr(path, '.')) == NULL) {
+		return RET_E;
+	}
+	len = strlen(ext);
+	if (len == 0 || len > 15) {
+		return RET_E;
+	}
+	n = PARAMS.extHead;
+	while(n != NULL) {
+		if (strcasecmp(ext, n->ext) == 0) {
+			return RET_O;
+		}
+		n = n->next;
+	}
+	return RET_E;
 }
 
 /******************************************************************************/
 
 void delAllExtensions()
 {
-    struct sEXTENSIONS *n = NULL;
-    struct sEXTENSIONS *nNext = NULL;
-    
-    n = PARAMS.extHead;
-    while(n != NULL) {
-        nNext = n->next;
-        free(n->ext);
-        free(n);
-        n = nNext;
-    }
-    PARAMS.extHead = NULL;
-    PARAMS.extLast = NULL;
-    return;
+	struct sEXTENSIONS *n = NULL;
+	struct sEXTENSIONS *nNext = NULL;
+
+	n = PARAMS.extHead;
+	while(n != NULL) {
+		nNext = n->next;
+		free(n->ext);
+		free(n);
+		n = nNext;
+	}
+	PARAMS.extHead = NULL;
+	PARAMS.extLast = NULL;
+	return;
 }

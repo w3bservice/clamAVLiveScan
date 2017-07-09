@@ -82,9 +82,9 @@ short int fileExists(char *path)
 {
 	FILE *fp;
 
-    if (strlen(path) == 0) {
-        return RET_E;
-    }
+	if (strlen(path) == 0) {
+		return RET_E;
+	}
 	if ((fp = (FILE *)fopen64(path, "r")) == NULL) {
 		return RET_E;
 	}
@@ -125,9 +125,9 @@ short int folderExists(char *path)
 {
 	DIR *dp;
 
-    if (strlen(path) == 0) {
-        return RET_E;
-    }
+	if (strlen(path) == 0) {
+		return RET_E;
+	}
 	if ((dp = opendir(path)) == NULL) {
 		return RET_E;
 	}
@@ -152,149 +152,149 @@ short int createAFolder(char *path)
 
 short int pathIsFile(char *path)
 {
-    if (folderExists(path) == RET_O) {
-        return 0;
-    }
-    if (fileExists(path) == RET_O) {
-        return 1;
-    }
-    return RET_E;
+	if (folderExists(path) == RET_O) {
+		return 0;
+	}
+	if (fileExists(path) == RET_O) {
+		return 1;
+	}
+	return RET_E;
 }
 
 /******************************************************************************/
 
 void selectAPath(HWND hDlg, int editID, char *filters)
 {
-    OPENFILENAME ofn;
-    char buffer[MAXPATH];
+	OPENFILENAME ofn;
+	char buffer[MAXPATH];
 
-    // Set Params
-    memset(buffer, 0, MAXPATH);
-    ZeroMemory(&ofn, sizeof(OPENFILENAME));
-    ofn.lStructSize = sizeof(OPENFILENAME);
-    ofn.hwndOwner = hDlg;
-    ofn.lpstrFile = buffer;
-    ofn.nMaxFile = (MAXPATH - 4);
-    ofn.lpstrFilter = filters;
-    ofn.nFilterIndex = 1;
-    ofn.Flags = OFN_PATHMUSTEXIST | OFN_EXPLORER | OFN_LONGNAMES;
-    // Show Dialog
-    if (GetOpenFileName(&ofn)) {
+	// Set Params
+	memset(buffer, 0, MAXPATH);
+	ZeroMemory(&ofn, sizeof(OPENFILENAME));
+	ofn.lStructSize = sizeof(OPENFILENAME);
+	ofn.hwndOwner = hDlg;
+	ofn.lpstrFile = buffer;
+	ofn.nMaxFile = (MAXPATH - 4);
+	ofn.lpstrFilter = filters;
+	ofn.nFilterIndex = 1;
+	ofn.Flags = OFN_PATHMUSTEXIST | OFN_EXPLORER | OFN_LONGNAMES;
+	// Show Dialog
+	if (GetOpenFileName(&ofn)) {
 		if (strlen(buffer) > 1) {
-            // Check File
-            if (editID != IDEDITLIVELOG && editID != IDEDITCLAMDSCANLOG && fileExists(buffer) == RET_E) {
-                MessageBox(hDlg, "File Not Found (Or Can't Open)", "Error", MB_OK|MB_ICONERROR);
-                return;
-            }
-            // Set File
-            setTextToEdit(hDlg, editID, buffer);
-        	// Set Param
-            switch(editID) {
-                // clamdPath
-                case IDEDITCLAMDEXE:
-                    memset(PARAMS.clamdPath, 0, MAXPATH);
-                    strcpy(PARAMS.clamdPath, buffer);
-                    break;
-                // clamdConfPath
-                case IDEDITCLAMDCONF:
-                    memset(PARAMS.clamdConfPath, 0, MAXPATH);
-                    strcpy(PARAMS.clamdConfPath, buffer);
-                    break;
-                // liveLogPath
-                case IDEDITLIVELOG:
-                    memset(PARAMS.liveLogPath, 0, MAXPATH);
-                    strcpy(PARAMS.liveLogPath, buffer);
-                    break;
-                // clamdscanPath
-                case IDEDITCLAMDSCANEXE:
-                    memset(PARAMS.clamdscanPath, 0, MAXPATH);
-                    strcpy(PARAMS.clamdscanPath, buffer);
-                    break;
-                // clamdscanLogPath
-                case IDEDITCLAMDSCANLOG:
-                    memset(PARAMS.clamdscanLogPath, 0, MAXPATH);
-                    strcpy(PARAMS.clamdscanLogPath, buffer);
-                    break;
-                // freshclamPath
-                case IDEDITFRESHCLAMEXE:
-                    memset(PARAMS.freshclamPath, 0, MAXPATH);
-                    strcpy(PARAMS.freshclamPath, buffer);
-                    break;
-                // freshclamConfPath
-                case IDEDITFRESHCLAMCONF:
-                    memset(PARAMS.freshclamConfPath, 0, MAXPATH);
-                    strcpy(PARAMS.freshclamConfPath, buffer);
-                    break;
-            }
-            // Save Params
-            saveParams();
+			// Check File
+			if (editID != IDEDITLIVELOG && editID != IDEDITCLAMDSCANLOG && fileExists(buffer) == RET_E) {
+				MessageBox(hDlg, "File Not Found (Or Can't Open)", "Error", MB_OK|MB_ICONERROR);
+				return;
+			}
+			// Set File
+			setTextToEdit(hDlg, editID, buffer);
+			// Set Param
+			switch(editID) {
+				// clamdPath
+				case IDEDITCLAMDEXE:
+					memset(PARAMS.clamdPath, 0, MAXPATH);
+					strcpy(PARAMS.clamdPath, buffer);
+					break;
+					// clamdConfPath
+				case IDEDITCLAMDCONF:
+					memset(PARAMS.clamdConfPath, 0, MAXPATH);
+					strcpy(PARAMS.clamdConfPath, buffer);
+					break;
+					// liveLogPath
+				case IDEDITLIVELOG:
+					memset(PARAMS.liveLogPath, 0, MAXPATH);
+					strcpy(PARAMS.liveLogPath, buffer);
+					break;
+					// clamdscanPath
+				case IDEDITCLAMDSCANEXE:
+					memset(PARAMS.clamdscanPath, 0, MAXPATH);
+					strcpy(PARAMS.clamdscanPath, buffer);
+					break;
+					// clamdscanLogPath
+				case IDEDITCLAMDSCANLOG:
+					memset(PARAMS.clamdscanLogPath, 0, MAXPATH);
+					strcpy(PARAMS.clamdscanLogPath, buffer);
+					break;
+					// freshclamPath
+				case IDEDITFRESHCLAMEXE:
+					memset(PARAMS.freshclamPath, 0, MAXPATH);
+					strcpy(PARAMS.freshclamPath, buffer);
+					break;
+					// freshclamConfPath
+				case IDEDITFRESHCLAMCONF:
+					memset(PARAMS.freshclamConfPath, 0, MAXPATH);
+					strcpy(PARAMS.freshclamConfPath, buffer);
+					break;
+			}
+			// Save Params
+			saveParams();
 		}
 	}
-    return;
+	return;
 }
 
 /******************************************************************************/
 
 short int selectAFile(HWND hDlg, char *outFile)
 {
-    OPENFILENAME ofn;
-    char buffer[MAXPATH];
-    int len;
+	OPENFILENAME ofn;
+	char buffer[MAXPATH];
+	int len;
 
-    // Set Params
-    memset(buffer, 0, MAXPATH);
-    ZeroMemory(&ofn, sizeof(OPENFILENAME));
-    ofn.lStructSize = sizeof(OPENFILENAME);
-    ofn.hwndOwner = hDlg;
-    ofn.lpstrFile = buffer;
-    ofn.nMaxFile = (MAXPATH - 2);
-    ofn.lpstrFilter = "All Files (*)\0*\0";
-    ofn.nFilterIndex = 1;
-    ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_LONGNAMES;
-    // Show Dialog
-    if (GetOpenFileName(&ofn)) {
+	// Set Params
+	memset(buffer, 0, MAXPATH);
+	ZeroMemory(&ofn, sizeof(OPENFILENAME));
+	ofn.lStructSize = sizeof(OPENFILENAME);
+	ofn.hwndOwner = hDlg;
+	ofn.lpstrFile = buffer;
+	ofn.nMaxFile = (MAXPATH - 2);
+	ofn.lpstrFilter = "All Files (*)\0*\0";
+	ofn.nFilterIndex = 1;
+	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_LONGNAMES;
+	// Show Dialog
+	if (GetOpenFileName(&ofn)) {
 		if (strlen(buffer) > 1) {
-            // Check File
-            if (fileExists(buffer) == RET_O) {
-        	   strcpy(outFile, buffer);
-        	   return RET_O;
-            }
-            MessageBox(hDlg, "File Not Found (Or Can't Open)", "Error", MB_OK|MB_ICONERROR);
+			// Check File
+			if (fileExists(buffer) == RET_O) {
+				strcpy(outFile, buffer);
+				return RET_O;
+			}
+			MessageBox(hDlg, "File Not Found (Or Can't Open)", "Error", MB_OK|MB_ICONERROR);
 		}
 	}
-    return RET_E;
+	return RET_E;
 }
 
 /******************************************************************************/
 
 short int selectAFolder(HWND hDlg, char *outFolder)
 {
-    BROWSEINFO bi;
-    LPITEMIDLIST pidl;
-    char buffer[MAXPATH];
+	BROWSEINFO bi;
+	LPITEMIDLIST pidl;
+	char buffer[MAXPATH];
 
-    // Set Params
-    memset(buffer, 0, MAXPATH);
-    ZeroMemory(&bi, sizeof(bi));
-    bi.hwndOwner = hDlg;
+	// Set Params
+	memset(buffer, 0, MAXPATH);
+	ZeroMemory(&bi, sizeof(bi));
+	bi.hwndOwner = hDlg;
 	bi.pidlRoot = NULL;
-    bi.pszDisplayName = buffer;
-    //bi.lpszTitle = (LPCTSTR)"Select A Folder...";
-    bi.ulFlags = BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
-    bi.lpfn = NULL;
-    bi.lParam = 0;
-    // Select Folder
-    if (pidl = SHBrowseForFolder(&bi)) {
-        // Get Folder
-        if (SHGetPathFromIDList(pidl, buffer) && strlen(buffer) > 1) {
+	bi.pszDisplayName = buffer;
+	//bi.lpszTitle = (LPCTSTR)"Select A Folder...";
+	bi.ulFlags = BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
+	bi.lpfn = NULL;
+	bi.lParam = 0;
+	// Select Folder
+	if (pidl = SHBrowseForFolder(&bi)) {
+		// Get Folder
+		if (SHGetPathFromIDList(pidl, buffer) && strlen(buffer) > 1) {
 			if (buffer[strlen(buffer) - 1] != '\\') {
-			    strcat(buffer, "\\");
+				strcat(buffer, "\\");
 			}
 			if (folderExists(buffer) == RET_O) {
-                strcpy(outFolder, buffer);
-                return RET_O;
-            }
-            MessageBox(hDlg, "Folder Not Found (Or Can't Open)", "Error", MB_OK|MB_ICONERROR);
+				strcpy(outFolder, buffer);
+				return RET_O;
+			}
+			MessageBox(hDlg, "Folder Not Found (Or Can't Open)", "Error", MB_OK|MB_ICONERROR);
 		}
 	}
 	return RET_E;
@@ -304,27 +304,27 @@ short int selectAFolder(HWND hDlg, char *outFolder)
 
 void convertToChar(WCHAR *in, char *out)
 {
-    while(*out++ = (char)*in++);
-    return;
+	while(*out++ = (char)*in++);
+	return;
 }
 
 /******************************************************************************/
 
 short int checkFileIsFree(char *path)
 {
-    HANDLE h = CreateFile(path, GENERIC_READ, 0, NULL, OPEN_EXISTING, 0, NULL);
-    
-    if (h == INVALID_HANDLE_VALUE) {
-        // Exists But Already Open
-        if (GetLastError() == ERROR_SHARING_VIOLATION) {
-            return 1;
-        }
-        // Error
-        return RET_E;
-    }
-    CloseHandle(h);
-    // OK
-    return RET_O;
+	HANDLE h = CreateFile(path, GENERIC_READ, 0, NULL, OPEN_EXISTING, 0, NULL);
+
+	if (h == INVALID_HANDLE_VALUE) {
+		// Exists But Already Open
+		if (GetLastError() == ERROR_SHARING_VIOLATION) {
+			return 1;
+		}
+		// Error
+		return RET_E;
+	}
+	CloseHandle(h);
+	// OK
+	return RET_O;
 }
 
 /******************************************************************************/
@@ -334,7 +334,7 @@ void addTextToEdit(HWND hWin, int idEdit, char *txt)
 	HWND hEdit = GetDlgItem(hWin, idEdit);
 	int ndx = GetWindowTextLength(hEdit);
 
-    // TODO Check Overflow Size
+	// TODO Check Overflow Size
 	SetFocus(hEdit);
 	#ifdef WIN32
 	SendMessage(hEdit, EM_SETSEL, (WPARAM)ndx, (LPARAM)ndx);
@@ -342,29 +342,29 @@ void addTextToEdit(HWND hWin, int idEdit, char *txt)
 	SendMessage(hEdit, EM_SETSEL, 0, MAKELONG(ndx, ndx));
 	#endif
 	SendMessage(hEdit, EM_REPLACESEL, 0, (LPARAM)((LPSTR)txt));
-    return;
+	return;
 }
 
 /******************************************************************************/
 
 void setFocusToWindow(HWND hDlg)
 {
-    FLASHWINFO pfwi;
-    
-    // On Top
-    SetWindowPos(hDlg, HWND_TOPMOST, 0, 0, 0, 0, SWP_SHOWWINDOW|SWP_NOSIZE|SWP_NOMOVE);
-    // Show/Focus
-    ShowWindow(hDlg, SW_RESTORE);
-    BringWindowToTop(hDlg);
-    SetFocus(hDlg);
-    // Flash
-    memset(&pfwi, 0, sizeof(FLASHWINFO));
-    pfwi.cbSize = sizeof(FLASHWINFO);
-    pfwi.hwnd = hDlg;
-    pfwi.dwFlags = FLASHW_TRAY;
-    pfwi.uCount = 4;
-    pfwi.dwTimeout = 0;
-    FlashWindowEx(&pfwi);
+	FLASHWINFO pfwi;
+
+	// On Top
+	SetWindowPos(hDlg, HWND_TOPMOST, 0, 0, 0, 0, SWP_SHOWWINDOW|SWP_NOSIZE|SWP_NOMOVE);
+	// Show/Focus
+	ShowWindow(hDlg, SW_RESTORE);
+	BringWindowToTop(hDlg);
+	SetFocus(hDlg);
+	// Flash
+	memset(&pfwi, 0, sizeof(FLASHWINFO));
+	pfwi.cbSize = sizeof(FLASHWINFO);
+	pfwi.hwnd = hDlg;
+	pfwi.dwFlags = FLASHW_TRAY;
+	pfwi.uCount = 4;
+	pfwi.dwTimeout = 0;
+	FlashWindowEx(&pfwi);
 	return;
 }
 
@@ -372,38 +372,38 @@ void setFocusToWindow(HWND hDlg)
 
 void setTextToEdit(HWND hDlg, int editID, char *txt)
 {
-    int len = strlen(txt);
-    
-    SetDlgItemText(hDlg, editID, txt);
-    if (len > 0) {
-        SendMessage(GetDlgItem(hDlg, editID), EM_SETSEL, (WPARAM)len, (LPARAM)len);
-    }
-    return;
+	int len = strlen(txt);
+
+	SetDlgItemText(hDlg, editID, txt);
+	if (len > 0) {
+		SendMessage(GetDlgItem(hDlg, editID), EM_SETSEL, (WPARAM)len, (LPARAM)len);
+	}
+	return;
 }
 
 /******************************************************************************/
 
 short int getFolderFromFilePath(char *filePath, char *folderPath)
 {
-    int i;
-    
-    i = strlen(filePath) - 1;
-    while(i > 1 && filePath[i] != '\\') {
-        i--;
-    }
-    if (i <= 1) {
-        return RET_E;
-    }
-    memset(folderPath, 0, MAXPATH);
-    strcpy(folderPath, filePath);
-    folderPath[i + 1] = '\0';
-    return RET_O;
+	int i;
+
+	i = strlen(filePath) - 1;
+	while(i > 1 && filePath[i] != '\\') {
+		i--;
+	}
+	if (i <= 1) {
+		return RET_E;
+	}
+	memset(folderPath, 0, MAXPATH);
+	strcpy(folderPath, filePath);
+	folderPath[i + 1] = '\0';
+	return RET_O;
 }
 
 /******************************************************************************/
 
 int getRandomNumber(int min, int max)
 {
-    srand(time(NULL) + rand());
+	srand(time(NULL) + rand());
 	return (rand() % (max - min + 1) + min);
 }

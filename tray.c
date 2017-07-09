@@ -25,17 +25,17 @@
 
 void initTrayIcon()
 {
-    // Create Systray Menu
-    createSystrayMenu();
-    // Init Systray Icon
-    memset(&SYSTRAY.trayIcon, 0, sizeof(NOTIFYICONDATA));
-    SYSTRAY.trayIcon.cbSize = sizeof(NOTIFYICONDATA);
-    SYSTRAY.trayIcon.hWnd = WIN.hMain;
-    SYSTRAY.trayIcon.uFlags = NIF_ICON | NIF_MESSAGE | NIF_TIP;
-    SYSTRAY.trayIcon.uCallbackMessage = WM_TRAYICON;
-    SYSTRAY.trayIcon.uID = IDICONMAINSMALL;
-    SYSTRAY.trayIcon.hIcon = IMGS.iconMainSmall;
-    strcpy(SYSTRAY.trayIcon.szTip, "ClamAV Live Scan");
+	// Create Systray Menu
+	createSystrayMenu();
+	// Init Systray Icon
+	memset(&SYSTRAY.trayIcon, 0, sizeof(NOTIFYICONDATA));
+	SYSTRAY.trayIcon.cbSize = sizeof(NOTIFYICONDATA);
+	SYSTRAY.trayIcon.hWnd = WIN.hMain;
+	SYSTRAY.trayIcon.uFlags = NIF_ICON | NIF_MESSAGE | NIF_TIP;
+	SYSTRAY.trayIcon.uCallbackMessage = WM_TRAYICON;
+	SYSTRAY.trayIcon.uID = IDICONMAINSMALL;
+	SYSTRAY.trayIcon.hIcon = IMGS.iconMainSmall;
+	strcpy(SYSTRAY.trayIcon.szTip, "ClamAV Live Scan");
 	return;
 }
 
@@ -43,30 +43,30 @@ void initTrayIcon()
 
 void createSystrayMenu()
 {
-    // Create Menu
-    SYSTRAY.hPopMenu = CreatePopupMenu();
-    AppendMenu(SYSTRAY.hPopMenu, MF_STRING, IDTRAYMENUSHOW, (LPCTSTR)"Show Program");
-    AppendMenu(SYSTRAY.hPopMenu, MF_SEPARATOR, -1, NULL);
-    AppendMenu(SYSTRAY.hPopMenu, MF_STRING, IDTRAYMENULOGS, (LPCTSTR)"Show Live Logs");
-    AppendMenu(SYSTRAY.hPopMenu, MF_SEPARATOR, -1, NULL);
-    AppendMenu(SYSTRAY.hPopMenu, MF_STRING, IDTRAYMENUSCAN, (LPCTSTR)"Scan File/Folder");
-    AppendMenu(SYSTRAY.hPopMenu, MF_SEPARATOR, -1, NULL);
-    AppendMenu(SYSTRAY.hPopMenu, MF_STRING, IDTRAYMENUSCANPROC, (LPCTSTR)"Scan All Processes");
-    AppendMenu(SYSTRAY.hPopMenu, MF_SEPARATOR, -1, NULL);
-    AppendMenu(SYSTRAY.hPopMenu, MF_STRING, IDTRAYMENUUPDATE, (LPCTSTR)"Update Databases");
-    AppendMenu(SYSTRAY.hPopMenu, MF_SEPARATOR, -1, NULL);
-    AppendMenu(SYSTRAY.hPopMenu, MF_STRING, IDTRAYMENUEXIT, (LPCTSTR)"Stop All And Exit");
-    return;
+	// Create Menu
+	SYSTRAY.hPopMenu = CreatePopupMenu();
+	AppendMenu(SYSTRAY.hPopMenu, MF_STRING, IDTRAYMENUSHOW, (LPCTSTR)"Show Program");
+	AppendMenu(SYSTRAY.hPopMenu, MF_SEPARATOR, -1, NULL);
+	AppendMenu(SYSTRAY.hPopMenu, MF_STRING, IDTRAYMENULOGS, (LPCTSTR)"Show Live Logs");
+	AppendMenu(SYSTRAY.hPopMenu, MF_SEPARATOR, -1, NULL);
+	AppendMenu(SYSTRAY.hPopMenu, MF_STRING, IDTRAYMENUSCAN, (LPCTSTR)"Scan File/Folder");
+	AppendMenu(SYSTRAY.hPopMenu, MF_SEPARATOR, -1, NULL);
+	AppendMenu(SYSTRAY.hPopMenu, MF_STRING, IDTRAYMENUSCANPROC, (LPCTSTR)"Scan All Processes");
+	AppendMenu(SYSTRAY.hPopMenu, MF_SEPARATOR, -1, NULL);
+	AppendMenu(SYSTRAY.hPopMenu, MF_STRING, IDTRAYMENUUPDATE, (LPCTSTR)"Update Databases");
+	AppendMenu(SYSTRAY.hPopMenu, MF_SEPARATOR, -1, NULL);
+	AppendMenu(SYSTRAY.hPopMenu, MF_STRING, IDTRAYMENUEXIT, (LPCTSTR)"Stop All And Exit");
+	return;
 }
 
 /******************************************************************************/
 
 void minimizeToNotifyTray()
 {
-    Shell_NotifyIcon(NIM_ADD, &SYSTRAY.trayIcon);
-    if (IsWindowVisible(WIN.hMain)) {
-    	ShowWindow(WIN.hMain, SW_HIDE);
-    }
+	Shell_NotifyIcon(NIM_ADD, &SYSTRAY.trayIcon);
+	if (IsWindowVisible(WIN.hMain)) {
+		ShowWindow(WIN.hMain, SW_HIDE);
+	}
 	return;
 }
 
@@ -74,10 +74,10 @@ void minimizeToNotifyTray()
 
 void maximizeFromNotifyTray()
 {
-    Shell_NotifyIcon(NIM_DELETE, &SYSTRAY.trayIcon);
-    ShowWindow(WIN.hMain, SW_SHOW);
-    ShowWindow(WIN.hMain, SW_RESTORE);
-    SetForegroundWindow(WIN.hMain);
+	Shell_NotifyIcon(NIM_DELETE, &SYSTRAY.trayIcon);
+	ShowWindow(WIN.hMain, SW_SHOW);
+	ShowWindow(WIN.hMain, SW_RESTORE);
+	SetForegroundWindow(WIN.hMain);
 	return;
 }
 
@@ -85,7 +85,7 @@ void maximizeFromNotifyTray()
 
 void destroyTrayIcon()
 {
-    Shell_NotifyIcon(NIM_DELETE, &SYSTRAY.trayIcon);
+	Shell_NotifyIcon(NIM_DELETE, &SYSTRAY.trayIcon);
 	return;
 }
 
@@ -93,10 +93,10 @@ void destroyTrayIcon()
 
 void showSystrayPopMenu()
 {
-    POINT cPosition;
+	POINT cPosition;
 
-    if (GetCursorPos(&cPosition)) {
-	    TrackPopupMenuEx(SYSTRAY.hPopMenu, 0, (int)cPosition.x - 170, (int)cPosition.y - 14, WIN.hMain, NULL);
+	if (GetCursorPos(&cPosition)) {
+		TrackPopupMenuEx(SYSTRAY.hPopMenu, 0, (int)cPosition.x - 170, (int)cPosition.y - 14, WIN.hMain, NULL);
 	}
 	return;
 }

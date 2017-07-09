@@ -25,66 +25,66 @@
 
 short int checkExitsRegedit()
 {
-    HKEY hKey;
+	HKEY hKey;
 
 	if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, (LPCTSTR)"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run\\", 0, KEY_QUERY_VALUE, &hKey) != ERROR_SUCCESS) {
 		return RET_E;
 	}
 	if (RegQueryValueEx(hKey, (LPCTSTR)"ClamAVLiveScan", NULL, NULL, NULL, NULL) != ERROR_SUCCESS) {
-        RegCloseKey(hKey);
-        return RET_E;
-    }
-    RegCloseKey(hKey);
-    return RET_O;
+		RegCloseKey(hKey);
+		return RET_E;
+	}
+	RegCloseKey(hKey);
+	return RET_O;
 }
 
 /******************************************************************************/
 
 short int addToRegedit(short int showMsg)
 {
-    HKEY hKey;
-    char path[10240];
-    
-    if (checkExitsRegedit() == RET_O) {
-        return RET_O;
-    }
-    if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, (LPCTSTR)"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run\\", 0, KEY_WRITE, &hKey) != ERROR_SUCCESS) {
-        if (showMsg == 1) {
-            MessageBox(WIN.hMain, "Can't Open Regedit Key", "Error", MB_OK|MB_ICONERROR);
-        }
+	HKEY hKey;
+	char path[10240];
+
+	if (checkExitsRegedit() == RET_O) {
+		return RET_O;
+	}
+	if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, (LPCTSTR)"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run\\", 0, KEY_WRITE, &hKey) != ERROR_SUCCESS) {
+		if (showMsg == 1) {
+			MessageBox(WIN.hMain, "Can't Open Regedit Key", "Error", MB_OK|MB_ICONERROR);
+		}
 		return RET_E;
 	}
 	memset(path, 0, 10240);
 	sprintf(path, "\"%s\" --auto", PARAMS.appPath);
 	if (RegSetValueEx(hKey, (LPCTSTR)"ClamAVLiveScan", 0, REG_SZ, (const BYTE *)path, (DWORD)strlen(path)) != ERROR_SUCCESS) {
-        RegCloseKey(hKey);
-        if (showMsg == 1) {
-            MessageBox(WIN.hMain, "Can't Write Value To Regedit", "Error", MB_OK|MB_ICONERROR);
-        }
-        return RET_E;
+		RegCloseKey(hKey);
+		if (showMsg == 1) {
+			MessageBox(WIN.hMain, "Can't Write Value To Regedit", "Error", MB_OK|MB_ICONERROR);
+		}
+		return RET_E;
 	}
 	RegCloseKey(hKey);
-    return RET_O;
+	return RET_O;
 }
 
 /******************************************************************************/
 
 short int delFromRegedit()
 {
-    HKEY hKey;
+	HKEY hKey;
 
-    if (checkExitsRegedit() == RET_E) {
-        return RET_O;
-    }
+	if (checkExitsRegedit() == RET_E) {
+		return RET_O;
+	}
 	if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, (LPCTSTR)"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run\\", 0, KEY_WRITE, &hKey) != ERROR_SUCCESS) {
 		MessageBox(WIN.hMain, "Can't Open Regedit Key", "Error", MB_OK|MB_ICONERROR);
 		return RET_E;
 	}
 	if (RegDeleteValue(hKey, (LPCTSTR)"ClamAVLiveScan") != ERROR_SUCCESS) {
-        RegCloseKey(hKey);
-        MessageBox(WIN.hMain, "Can't Delete Value On Regedit", "Error", MB_OK|MB_ICONERROR);
-        return RET_E;
+		RegCloseKey(hKey);
+		MessageBox(WIN.hMain, "Can't Delete Value On Regedit", "Error", MB_OK|MB_ICONERROR);
+		return RET_E;
 	}
 	RegCloseKey(hKey);
-    return RET_O;
+	return RET_O;
 }
